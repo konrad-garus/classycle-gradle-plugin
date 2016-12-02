@@ -15,7 +15,7 @@ $reporting/classycle/$name.txt.
 buildscript {
   repositories { maven { url "https://plugins.gradle.org/m2/" } }
   dependencies {
-    classpath "gradle.plugin.pl.squirrel:classycle-gradle-plugin:1.1"
+    classpath "gradle.plugin.pl.squirrel:classycle-gradle-plugin:1.2"
   }
 }
 
@@ -27,7 +27,7 @@ Gradle 2.1:
 
 ```
 plugins {
-  id "pl.squirrel.classycle" version "1.1"
+  id "pl.squirrel.classycle" version "1.2"
 }
 ```
 
