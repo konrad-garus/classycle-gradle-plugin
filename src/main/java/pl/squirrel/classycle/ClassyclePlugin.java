@@ -30,15 +30,26 @@ public class ClassyclePlugin implements Plugin<Project> {
         final Task checkTask = project.getTasks().getByName("check");
         for (String name : sourceSets.keySet()) {
             final SourceSet sourceSet = sourceSets.get(name);
-            final File definitionFile = project.file("src/test/resources/classycle-" + name + ".txt");
-            if (!definitionFile.exists()) {
-                log.debug("Classycle definition file not found: " + definitionFile + ", skipping source set "
-                        + name);
-            }
-            final File classDir = sourceSet.getOutput().getClassesDir();
             final String taskName = sourceSet.getTaskName("classycle", null);
+            final SourceSetClassycleTask task = project.getTasks().create(taskName, SourceSetClassycleTask.class);
+
+            final File definitionFile;
+            if (task.getDefinitionFilePath() != null) {
+                definitionFile = project.file(task.getDefinitionFilePath());
+                if (!definitionFile.exists()) {
+                    throw new RuntimeException("Definition file not found: " + definitionFile);
+                }
+            } else {
+                definitionFile = project.file("src/test/resources/classycle-" + name + ".txt");
+                if (!definitionFile.exists()) {
+                    log.debug("Default classycle definition file not found: " + definitionFile + ", skipping source set "
+                                  + name);
+                    continue;
+                }
+            }
+
+            final File classDir = sourceSet.getOutput().getClassesDir();
             final File reportFile = reporting.file("classycle/" + name + ".txt");
-            final Task task = project.task(taskName);
             task.getInputs().files(classDir, definitionFile);
             task.getOutputs().file(reportFile);
             log.debug("Created classycle task: " + taskName + ", report file: " + reportFile);
@@ -59,14 +70,15 @@ public class ClassyclePlugin implements Plugin<Project> {
                         classycle.setDefinitionFile(definitionFile);
                         classycle.setProject(project.getAnt().getAntProject());
                         FileSet fileSet = new FileSet();
+                        fileSet.setIncludes("**/*.class");
                         fileSet.setDir(classDir);
                         fileSet.setProject(classycle.getProject());
                         classycle.add(fileSet);
                         classycle.execute();
                     } catch (Exception e) {
                         throw new RuntimeException(
-                                "Classycle check failed: " + e.getMessage() + ". See report at "
-                                        + clickableFileUrl(reportFile), e);
+                            "Classycle check failed: " + e.getMessage() + ". See report at "
+                                + clickableFileUrl(reportFile), e);
                     }
                 }
             });
