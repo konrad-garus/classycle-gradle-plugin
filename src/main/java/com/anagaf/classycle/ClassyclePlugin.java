@@ -66,7 +66,7 @@ public class ClassyclePlugin implements Plugin<Project> {
     }
 
     /**
-     * Creates source set classycle task. Added dependency of the created task to general "classycle"
+     * Creates source set classycle task. Adds dependency of the created task to general "classycle"
      * task.
      *
      * @param logger          logger
