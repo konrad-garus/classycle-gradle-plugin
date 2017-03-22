@@ -1,4 +1,4 @@
-package pl.squirrel.classycle;
+package com.anagaf.classycle;
 
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.AndroidSourceSet;

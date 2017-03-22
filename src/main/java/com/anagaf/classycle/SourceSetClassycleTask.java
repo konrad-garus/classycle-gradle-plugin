@@ -1,4 +1,4 @@
-package pl.squirrel.classycle;
+package com.anagaf.classycle;
 
 import org.apache.tools.ant.types.FileSet;
 import org.gradle.api.DefaultTask;
