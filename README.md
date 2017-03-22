@@ -23,7 +23,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath "gradle.plugin.com.anagaf:classycle-gradle-plugin:1.0"
+    classpath "gradle.plugin.com.anagaf:classycle-gradle-plugin:1.0.1"
   }
 }
 
@@ -33,7 +33,7 @@ Build script snippet for new, incubating, plugin mechanism introduced in
 Gradle 2.1:
 ```
 plugins {
-  id "com.anagaf.classycle" version "1.0"
+  id "com.anagaf.classycle" version "1.0.1"
 }
 ```
 ### Create Classycle Definition File
