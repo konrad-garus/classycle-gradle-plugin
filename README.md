@@ -45,10 +45,8 @@ show allResults
 {package} = com.example
 check absenceOfPackageCycles > 1 in ${package}.*
 ```
-### Run the Analyzer
-
-Specify Classycle Definition File for the source sets you would like to be checked. This could be done
-by setting "definitionFilePath" property of the corresponding Classycle task:
+Specify Classycle definition file path for the source sets you would like to be checked. This could be 
+done by setting "definitionFilePath" property of the corresponding Classycle task:
 ```
 classycleMain.definitionFilePath = "config/classycle-main.txt"
 ```
