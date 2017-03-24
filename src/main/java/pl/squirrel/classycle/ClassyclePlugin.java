@@ -1,4 +1,4 @@
-package com.anagaf.classycle;
+package pl.squirrel.classycle;
 
 import com.android.build.gradle.AppExtension;
 import com.android.build.gradle.api.AndroidSourceSet;
@@ -11,6 +11,8 @@ import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
 
 import java.io.File;
+
+import classycle.ant.DependencyCheckingTask;
 
 /**
  * Gradle plugin that creates classycle tasks for project source sets. Task names are built as
@@ -83,6 +85,7 @@ public class ClassyclePlugin implements Plugin<Project> {
         final Project project = classycleTask.getProject();
         final String taskName = "classycle" + capitalizeFirstLetter(sourceSetName);
         final SourceSetClassycleTask task = project.getTasks().create(taskName, SourceSetClassycleTask.class);
+        task.setDependencyCheckingTaskFactory(DependencyCheckingTask::new);
         task.setSourceSetName(sourceSetName);
         task.setClassesDir(classesDir);
         task.dependsOn(project.getTasks().getByName(classesTaskName));
