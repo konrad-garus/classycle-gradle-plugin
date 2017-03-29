@@ -8,6 +8,12 @@ buildscript {
     }
 }
 
+allprojects {
+    repositories {
+        jcenter()
+    }
+}
+
 apply plugin: "com.gradle.plugin-publish"
 apply plugin: "java"
 apply plugin: "maven"
@@ -15,11 +21,14 @@ apply plugin: "maven"
 dependencies {
     compile gradleApi()
     compile files('lib/classycle-1.4.2.jar')
+    compile 'com.android.tools.build:gradle:2.2.0'
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.7.19'
 }
 
-version = "1.2"
+version = "2.0"
 group = "pl.squirrel"
-targetCompatibility = 1.7
 
 jar {
     from zipTree('lib/classycle-1.4.2.jar')

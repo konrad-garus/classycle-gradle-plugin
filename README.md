@@ -3,19 +3,26 @@ Gradle plugin for Classycle dependency analyzer
 
 ## Usage
 
-This plugin assumes that the "java" plugin is also applied on the project. For 
-each source set $name it looks for classycle definition file
-src/test/resources/classycle-$name.txt. If the file exists, the plugin creates
-a classycle$Name task that analyzes that source set and writes report to
-$reporting/classycle/$name.txt.
+This is a gradle plugin that creates Classycle tasks for all project source sets (including
+Android source sets). Task names are constructed as "classycle" + source set name 
+(e.g. "classycleRelease", "classycleMain" etc).
 
+As the result of this plugin application "check" task depends on the general "classycle" task. General
+"classycle" task depends on source set Classycle tasks i.e. the resulting task graph looks like:
+```
+check
+    classycle
+        classycleRelease
+        classycleDebug
+        ...
+```
 ### Add Plugin to Your Project
 
 ```
 buildscript {
   repositories { maven { url "https://plugins.gradle.org/m2/" } }
   dependencies {
-    classpath "gradle.plugin.pl.squirrel:classycle-gradle-plugin:1.2"
+    classpath "gradle.plugin.pl.squirrel:classycle-gradle-plugin:2.0"
   }
 }
 
@@ -27,21 +34,24 @@ Gradle 2.1:
 
 ```
 plugins {
-  id "pl.squirrel.classycle" version "1.2"
+  id "pl.squirrel.classycle" version "2.0"
 }
 ```
-
 ### Create Classycle Definition File
 
-src/test/resources/classycle-main.txt:
-
+config/classycle-main.txt:
 ```
 show allResults
 
 {package} = com.example
 check absenceOfPackageCycles > 1 in ${package}.*
 ```
-
+Specify Classycle definition file path for the source sets you would like to be checked. This could be 
+done by setting "definitionFilePath" property of the corresponding Classycle task:
+```
+classycleMain.definitionFilePath = "config/classycle-main.txt"
+```
+Note that source set Classycle tasks without definition file are ignored.
 ### Run the Analyzer
 
 Concrete source set:
